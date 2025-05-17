@@ -1,6 +1,6 @@
 <template>
-  <div class="app-container">
-    <div class="header header-icon-center" id="main-header">
+  <div>
+    <div class="header header-icon-center">
       <a href="#" class="header-icon header-icon-1" @click.prevent="goBack" data-back-button>
         <svg width="24" height="24" viewBox="0 0 24 24">
           <path d="M15 18l-6-6 6-6" stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
@@ -9,61 +9,59 @@
       <a href="#" class="header-title">{{ tMenuTitle() }}</a>
     </div>
 
-    <div class="content-wrapper">
-      <div class="menu">
-        <div v-if="!selectedCategory" class="categories">
-          <div 
-            v-for="category in categories" 
-            :key="category.id"
-            class="category-card"
-            @click="selectCategory(category.id)"
-          >
-            <div class="category-content">
-              <div class="category-text">
-                <div class="category-title">{{ tCategory(category.id) }}</div>
-                <div class="category-desc">{{ tCategoryDesc(category.id) }}</div>
-              </div>
-              <i :class="categoryIcons[category.id] + ' category-icon'"></i>
+    <div class="menu">
+      <div v-if="!selectedCategory" class="categories">
+        <div 
+          v-for="category in categories" 
+          :key="category.id"
+          class="category-card"
+          @click="selectCategory(category.id)"
+        >
+          <div class="category-content">
+            <div class="category-text">
+              <div class="category-title">{{ tCategory(category.id) }}</div>
+              <div class="category-desc">{{ tCategoryDesc(category.id) }}</div>
             </div>
+            <i :class="categoryIcons[category.id] + ' category-icon'"></i>
           </div>
         </div>
+      </div>
 
-        <div v-else>
-          <button class="back-btn" @click="selectedCategory = null">← {{ selectedLang === 'tr' ? 'Kategorilere Dön' : selectedLang === 'en' ? 'Back to Categories' : selectedLang === 'ru' ? 'Назад к категориям' : 'العودة إلى الفئات' }}</button>
-          <h2 class="category-title">{{ tCategory(selectedCategory) }}</h2>
-          <div class="menu-items">
-            <div 
-              v-for="item in filteredItems" 
-              :key="item.id" 
-              class="menu-item"
-              @click="openModal(item)"
-            >
-              <img :src="item.image" :alt="item.name">
-              <div class="item-info">
-                <h3>{{ item.name }}</h3>
-                <p class="price">{{ item.price }} TL</p>
-              </div>
+      <div v-else>
+        <button class="back-btn" @click="selectedCategory = null">← {{ selectedLang === 'tr' ? 'Kategorilere Dön' : selectedLang === 'en' ? 'Back to Categories' : selectedLang === 'ru' ? 'Назад к категориям' : 'العودة إلى الفئات' }}</button>
+        <h2 class="category-title">{{ tCategory(selectedCategory) }}</h2>
+        <div class="menu-items">
+          <div 
+            v-for="item in filteredItems" 
+            :key="item.id" 
+            class="menu-item"
+            @click="openModal(item)"
+          >
+            <img :src="item.image" :alt="item.name">
+            <div class="item-info">
+              <h3>{{ item.name }}</h3>
+              <p class="price">{{ item.price }} TL</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal -->
-    <div v-if="selectedItem" class="modal" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <button class="close-btn" @click="closeModal">&times;</button>
-        <img :src="selectedItem.image" :alt="selectedItem.name">
-        <h2>{{ selectedItem.name }}</h2>
-        <p class="description">{{ selectedItem.description }}</p>
-        <p class="price">{{ selectedItem.price }} TL</p>
+      <!-- Modal -->
+      <div v-if="selectedItem" class="modal" @click="closeModal">
+        <div class="modal-content" @click.stop>
+          <button class="close-btn" @click="closeModal">&times;</button>
+          <img :src="selectedItem.image" :alt="selectedItem.name">
+          <h2>{{ selectedItem.name }}</h2>
+          <p class="description">{{ selectedItem.description }}</p>
+          <p class="price">{{ selectedItem.price }} TL</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios'
 
 const API_URL = 'https://agencymanager.onrender.com'
@@ -201,32 +199,10 @@ const categoryIcons: Record<number, string> = {
   4: 'fa-solid fa-drumstick-bite'      // Ana Yemekler
 }
 
-onMounted(() => {
-  // No need for updateMenuPadding function anymore
-  window.addEventListener('resize', handleResize)
-  handleResize() // Initialize when mounted
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
-})
-
-// New function to handle resize events and device differences
-function handleResize() {
-  // No specific resize handling needed with the new CSS approach
-}
-
 fetchData()
 </script>
 
 <style scoped>
-.app-container {
-  position: relative;
-  min-height: 100vh;
-  padding-top: 72px; /* Increased from 56px to give more space below header */
-  box-sizing: border-box;
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -235,7 +211,7 @@ fetchData()
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
+  width: 100vw;
   height: 56px;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -243,7 +219,6 @@ fetchData()
   border-radius: 0;
   margin: 0;
 }
-
 .header-icon {
   position: absolute;
   left: 16px;
@@ -251,27 +226,21 @@ fetchData()
   transform: translateY(-50%);
   cursor: pointer;
 }
-
 .header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 20px;
   font-weight: bold;
   color: #333;
 }
-
-.content-wrapper {
-  width: 100%;
-  overflow-x: hidden;
-  padding-top: 10px; /* Added padding to ensure content starts below header */
-}
-
 .menu {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 0.5rem 1rem 2rem; /* Reduced top padding */
+  padding: 72px 1rem 2rem 1rem;
   box-sizing: border-box;
 }
-
 @media (min-width: 600px) {
   .menu {
     max-width: 500px;
@@ -280,14 +249,12 @@ fetchData()
     padding-right: 2rem;
   }
 }
-
 .categories {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   margin-bottom: 2rem;
   align-items: center;
-  padding-top: 0.5rem; /* Added padding at the top of categories */
 }
 
 .category-card {
@@ -296,7 +263,7 @@ fetchData()
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding: 1.5rem 2rem;
   display: flex;
   flex-direction: column;
@@ -342,8 +309,9 @@ fetchData()
   font-size: 2.5rem;
   color: #e74c3c;
   margin-left: 1.5rem;
+  margin-bottom: 0;
   display: block;
-  align-self: center;
+  align-self: flex-end;
 }
 
 .back-btn {
@@ -355,10 +323,9 @@ fetchData()
   cursor: pointer;
   font-weight: 600;
   text-align: left;
-  padding: 0;
 }
 
-h2.category-title {
+.category-title {
   margin-bottom: 2rem;
   color: #e74c3c;
   font-size: 2rem;
@@ -411,7 +378,7 @@ h2.category-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1500;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -445,16 +412,4 @@ h2.category-title {
   margin: 1rem 0;
   color: #666;
 }
-
-/* Safe area padding for iPhone notch and other device variations */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .app-container {
-    padding-top: calc(72px + env(safe-area-inset-top));
-  }
-  
-  .header {
-    padding-top: env(safe-area-inset-top);
-    height: calc(56px + env(safe-area-inset-top));
-  }
-}
-</style>
+</style> 

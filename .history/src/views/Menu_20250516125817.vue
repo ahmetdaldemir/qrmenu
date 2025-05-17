@@ -1,69 +1,62 @@
 <template>
-  <div class="app-container">
-    <div class="header header-icon-center" id="main-header">
-      <a href="#" class="header-icon header-icon-1" @click.prevent="goBack" data-back-button>
+  <div>
+    <div class="header header-icon-center">
+      <a href="/" class="header-icon header-icon-1" data-back-button>
         <svg width="24" height="24" viewBox="0 0 24 24">
           <path d="M15 18l-6-6 6-6" stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </a>
-      <a href="#" class="header-title">{{ tMenuTitle() }}</a>
+      <a href="#" class="header-title">Menü</a>
     </div>
 
-    <div class="content-wrapper">
-      <div class="menu">
-        <div v-if="!selectedCategory" class="categories">
-          <div 
-            v-for="category in categories" 
-            :key="category.id"
-            class="category-card"
-            @click="selectCategory(category.id)"
-          >
-            <div class="category-content">
-              <div class="category-text">
-                <div class="category-title">{{ tCategory(category.id) }}</div>
-                <div class="category-desc">{{ tCategoryDesc(category.id) }}</div>
-              </div>
-              <i :class="categoryIcons[category.id] + ' category-icon'"></i>
-            </div>
-          </div>
+    <div class="menu">
+      <div v-if="!selectedCategory" class="categories">
+        <div 
+          v-for="category in categories" 
+          :key="category.id"
+          class="category-card"
+          @click="selectCategory(category.id)"
+        >
+          <div class="category-title">{{ category.name }}</div>
+          <div class="category-desc">{{ getCategoryDesc(category.id) }}</div>
         </div>
+      </div>
 
-        <div v-else>
-          <button class="back-btn" @click="selectedCategory = null">← {{ selectedLang === 'tr' ? 'Kategorilere Dön' : selectedLang === 'en' ? 'Back to Categories' : selectedLang === 'ru' ? 'Назад к категориям' : 'العودة إلى الفئات' }}</button>
-          <h2 class="category-title">{{ tCategory(selectedCategory) }}</h2>
-          <div class="menu-items">
-            <div 
-              v-for="item in filteredItems" 
-              :key="item.id" 
-              class="menu-item"
-              @click="openModal(item)"
-            >
-              <img :src="item.image" :alt="item.name">
-              <div class="item-info">
-                <h3>{{ item.name }}</h3>
-                <p class="price">{{ item.price }} TL</p>
-              </div>
+      <div v-else>
+        <button class="back-btn" @click="selectedCategory = null">← Kategorilere Dön</button>
+        <h2 class="category-title">{{ selectedCategoryName }}</h2>
+        <div class="menu-items">
+          <div 
+            v-for="item in filteredItems" 
+            :key="item.id" 
+            class="menu-item"
+            @click="openModal(item)"
+          >
+            <img :src="item.image" :alt="item.name">
+            <div class="item-info">
+              <h3>{{ item.name }}</h3>
+              <p class="price">{{ item.price }} TL</p>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal -->
-    <div v-if="selectedItem" class="modal" @click="closeModal">
-      <div class="modal-content" @click.stop>
-        <button class="close-btn" @click="closeModal">&times;</button>
-        <img :src="selectedItem.image" :alt="selectedItem.name">
-        <h2>{{ selectedItem.name }}</h2>
-        <p class="description">{{ selectedItem.description }}</p>
-        <p class="price">{{ selectedItem.price }} TL</p>
+      <!-- Modal -->
+      <div v-if="selectedItem" class="modal" @click="closeModal">
+        <div class="modal-content" @click.stop>
+          <button class="close-btn" @click="closeModal">&times;</button>
+          <img :src="selectedItem.image" :alt="selectedItem.name">
+          <h2>{{ selectedItem.name }}</h2>
+          <p class="description">{{ selectedItem.description }}</p>
+          <p class="price">{{ selectedItem.price }} TL</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed } from 'vue'
 import axios from 'axios'
 
 const API_URL = 'https://agencymanager.onrender.com'
@@ -80,20 +73,6 @@ interface MenuItem {
 interface Category {
   id: number
   name: string
-}
-
-const languages = [
-  { code: 'en', label: 'EN', icon: '🇬🇧' },
-  { code: 'tr', label: 'TR', icon: '🇹🇷' },
-  { code: 'ru', label: 'RU', icon: '🇷🇺' },
-  { code: 'ar', label: 'AR', icon: '🇸🇦' },
-]
-const selectedLang = ref(localStorage.getItem('lang') || 'en')
-
-const setLang = (code: string) => {
-  selectedLang.value = code
-  localStorage.setItem('lang', code)
-  window.location.reload()
 }
 
 const categories = ref<Category[]>([])
@@ -127,27 +106,6 @@ const dummyMenuItems: MenuItem[] = [
   { id: 11, name: 'Izgara Balık', description: 'Taze günlük balık', price: 210, image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500', categoryId: 4 },
   { id: 12, name: 'Tavuk Şiş', description: 'Izgara tavuk şiş', price: 120, image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=500', categoryId: 4 }
 ]
-
-// Çok dilli kategori başlıkları ve açıklamaları
-const categoryTranslations: Record<number, { en: string, tr: string, ru: string, ar: string }> = {
-  1: { en: 'Alcoholic Drinks', tr: 'Alkollü İçecekler', ru: 'Алкогольные напитки', ar: 'مشروبات كحولية' },
-  2: { en: 'Non-Alcoholic Drinks', tr: 'Alkolsüz İçecekler', ru: 'Безалкогольные напитки', ar: 'مشروبات غير كحولية' },
-  3: { en: 'Hot Starters', tr: 'Ara Sıcaklar', ru: 'Горячие закуски', ar: 'مقبلات ساخنة' },
-  4: { en: 'Main Dishes', tr: 'Ana Yemekler', ru: 'Основные блюда', ar: 'الأطباق الرئيسية' }
-}
-const categoryDescTranslations: Record<number, { en: string, tr: string, ru: string, ar: string }> = {
-  1: { en: 'Whiskeys, Beers, Cocktails ...', tr: 'Viskiler, Biralar, Kokteyller ...', ru: 'Виски, пиво, коктейли ...', ar: 'ويسكي، بيرة، كوكتيلات ...' },
-  2: { en: 'Sodas, Juices, Cold Teas ...', tr: 'Gazlı İçecekler, Meyve Suları, Soğuk Çaylar ...', ru: 'Газированные напитки, соки, холодные чаи ...', ar: 'مشروبات غازية، عصائر، شاي بارد ...' },
-  3: { en: 'Cheese rolls, Hummus, Hot starters ...', tr: 'Peynirli börekler, Humus, Ara sıcaklar ...', ru: 'Сырные рулеты, хумус, горячие закуски ...', ar: 'لفائف الجبن، حمص، مقبلات ساخنة ...' },
-  4: { en: 'Main courses, Salads, Desserts ...', tr: 'Ana Yemekler, Salatalar, Tatlılar ...', ru: 'Основные блюда, салаты, десерты ...', ar: 'الأطباق الرئيسية، سلطات، حلويات ...' }
-}
-
-const tCategory = (id: number) => categoryTranslations[id]?.[selectedLang.value as 'en'|'tr'|'ru'|'ar'] || ''
-const tCategoryDesc = (id: number) => categoryDescTranslations[id]?.[selectedLang.value as 'en'|'tr'|'ru'|'ar'] || ''
-
-// Menü başlığı çevirisi
-const menuTitleTranslations = { en: 'Menu', tr: 'Menü', ru: 'Меню', ar: 'القائمة' }
-const tMenuTitle = () => menuTitleTranslations[selectedLang.value as 'en'|'tr'|'ru'|'ar']
 
 // Fetch categories and menu items
 const fetchData = async () => {
@@ -186,47 +144,19 @@ const closeModal = () => {
   selectedItem.value = null
 }
 
-const goBack = () => {
-  if (selectedCategory.value) {
-    selectedCategory.value = null;
-  } else {
-    window.history.length > 1 ? window.history.back() : window.location.href = '/';
-  }
+const categoryDescriptions: Record<number, string> = {
+  1: "Viskiler, Biralar, Kokteyller ...",
+  2: "Gazlı İçecekler, Meyve Suları, Soğuk Çaylar ...",
+  3: "Peynirli börekler, Humus, Ara sıcaklar ...",
+  4: "Ana Yemekler, Salatalar, Tatlılar ..."
 }
 
-const categoryIcons: Record<number, string> = {
-  1: 'fa-solid fa-martini-glass',      // Alkollü İçecekler
-  2: 'fa-solid fa-mug-saucer',         // Alkolsüz İçecekler
-  3: 'fa-solid fa-utensils',           // Ara Sıcaklar
-  4: 'fa-solid fa-drumstick-bite'      // Ana Yemekler
-}
-
-onMounted(() => {
-  // No need for updateMenuPadding function anymore
-  window.addEventListener('resize', handleResize)
-  handleResize() // Initialize when mounted
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
-})
-
-// New function to handle resize events and device differences
-function handleResize() {
-  // No specific resize handling needed with the new CSS approach
-}
+const getCategoryDesc = (id: number) => categoryDescriptions[id] || ""
 
 fetchData()
 </script>
 
 <style scoped>
-.app-container {
-  position: relative;
-  min-height: 100vh;
-  padding-top: 72px; /* Increased from 56px to give more space below header */
-  box-sizing: border-box;
-}
-
 .header {
   display: flex;
   align-items: center;
@@ -235,7 +165,7 @@ fetchData()
   top: 0;
   left: 0;
   right: 0;
-  width: 100%;
+  width: 100vw;
   height: 56px;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -243,7 +173,6 @@ fetchData()
   border-radius: 0;
   margin: 0;
 }
-
 .header-icon {
   position: absolute;
   left: 16px;
@@ -251,27 +180,21 @@ fetchData()
   transform: translateY(-50%);
   cursor: pointer;
 }
-
 .header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 20px;
   font-weight: bold;
   color: #333;
 }
-
-.content-wrapper {
-  width: 100%;
-  overflow-x: hidden;
-  padding-top: 10px; /* Added padding to ensure content starts below header */
-}
-
 .menu {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 0.5rem 1rem 2rem; /* Reduced top padding */
+  padding: 72px 1rem 2rem 1rem;
   box-sizing: border-box;
 }
-
 @media (min-width: 600px) {
   .menu {
     max-width: 500px;
@@ -280,14 +203,12 @@ fetchData()
     padding-right: 2rem;
   }
 }
-
 .categories {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
   margin-bottom: 2rem;
   align-items: center;
-  padding-top: 0.5rem; /* Added padding at the top of categories */
 }
 
 .category-card {
@@ -296,7 +217,7 @@ fetchData()
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   padding: 1.5rem 2rem;
   display: flex;
   flex-direction: column;
@@ -310,40 +231,16 @@ fetchData()
   transform: translateY(-2px) scale(1.01);
 }
 
-.category-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.category-text {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  flex: 1;
-}
-
 .category-title {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #e74c3c;
+  color: #222;
   margin-bottom: 0.5rem;
-  text-align: left;
 }
 
 .category-desc {
   color: #888;
   font-size: 1rem;
-  text-align: left;
-}
-
-.category-icon {
-  font-size: 2.5rem;
-  color: #e74c3c;
-  margin-left: 1.5rem;
-  display: block;
-  align-self: center;
 }
 
 .back-btn {
@@ -355,10 +252,9 @@ fetchData()
   cursor: pointer;
   font-weight: 600;
   text-align: left;
-  padding: 0;
 }
 
-h2.category-title {
+.category-title {
   margin-bottom: 2rem;
   color: #e74c3c;
   font-size: 2rem;
@@ -411,7 +307,7 @@ h2.category-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1500;
+  z-index: 1000;
 }
 
 .modal-content {
@@ -445,16 +341,4 @@ h2.category-title {
   margin: 1rem 0;
   color: #666;
 }
-
-/* Safe area padding for iPhone notch and other device variations */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .app-container {
-    padding-top: calc(72px + env(safe-area-inset-top));
-  }
-  
-  .header {
-    padding-top: env(safe-area-inset-top);
-    height: calc(56px + env(safe-area-inset-top));
-  }
-}
-</style>
+</style> 
