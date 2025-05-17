@@ -63,7 +63,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import axios from 'axios'
 
 const API_URL = 'https://agencymanager.onrender.com'
@@ -156,8 +156,8 @@ const fetchData = async () => {
       axios.get(`${API_URL}/categories`),
       axios.get(`${API_URL}/menu-items`)
     ])
-    categories.value = categoriesResponse.data
-    menuItems.value = menuResponse.data
+    categories.value = categoriesResponse.data.length ? categoriesResponse.data : dummyCategories
+    menuItems.value = menuResponse.data.length ? menuResponse.data : dummyMenuItems
   } catch (error) {
     categories.value = dummyCategories
     menuItems.value = dummyMenuItems
@@ -201,20 +201,19 @@ const categoryIcons: Record<number, string> = {
   4: 'fa-solid fa-drumstick-bite'      // Ana Yemekler
 }
 
+function updateMenuPadding() {
+  // Bu fonksiyona artık ihtiyacımız yok, ama boş bırakıyoruz
+  // çünkü event listener'lar bu fonksiyonu kullanıyor
+}
+
 onMounted(() => {
-  // No need for updateMenuPadding function anymore
-  window.addEventListener('resize', handleResize)
-  handleResize() // Initialize when mounted
+  updateMenuPadding()
+  window.addEventListener('resize', updateMenuPadding)
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', handleResize)
+  window.removeEventListener('resize', updateMenuPadding)
 })
-
-// New function to handle resize events and device differences
-function handleResize() {
-  // No specific resize handling needed with the new CSS approach
-}
 
 fetchData()
 </script>
@@ -223,7 +222,7 @@ fetchData()
 .app-container {
   position: relative;
   min-height: 100vh;
-  padding-top: 72px; /* Increased from 56px to give more space below header */
+  padding-top: 56px; /* Header yüksekliği kadar */
   box-sizing: border-box;
 }
 
@@ -261,14 +260,13 @@ fetchData()
 .content-wrapper {
   width: 100%;
   overflow-x: hidden;
-  padding-top: 10px; /* Added padding to ensure content starts below header */
 }
 
 .menu {
   width: 100%;
   max-width: 100%;
   margin: 0;
-  padding: 0.5rem 1rem 2rem; /* Reduced top padding */
+  padding: 1rem 1rem 2rem;
   box-sizing: border-box;
 }
 
@@ -287,7 +285,7 @@ fetchData()
   gap: 1.5rem;
   margin-bottom: 2rem;
   align-items: center;
-  padding-top: 0.5rem; /* Added padding at the top of categories */
+  margin-top: 0.5rem;
 }
 
 .category-card {
@@ -444,17 +442,5 @@ h2.category-title {
 .description {
   margin: 1rem 0;
   color: #666;
-}
-
-/* Safe area padding for iPhone notch and other device variations */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .app-container {
-    padding-top: calc(72px + env(safe-area-inset-top));
-  }
-  
-  .header {
-    padding-top: env(safe-area-inset-top);
-    height: calc(56px + env(safe-area-inset-top));
-  }
 }
 </style>
