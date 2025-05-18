@@ -16,8 +16,6 @@
         <div class="buttons">
           <router-link to="/menu" class="btn main">{{ t('menu') }}</router-link>
           <router-link to="/reservation" class="btn secondary">{{ t('reservation') }}</router-link>
-          <router-link to="/route" class="btn main">{{ t('route') }}</router-link>
-          <router-link to="/rate-us" class="btn secondary">{{ t('rateUs') }}</router-link>
         </div>
       </div>
     </div>
@@ -30,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const languages = [
   { code: 'en', label: 'EN', icon: '🇬🇧' },
@@ -49,8 +47,6 @@ const setLang = (code: string) => {
 const translations = {
   menu: { en: 'Menu', tr: 'Menü', ru: 'Меню', ar: 'القائمة' },
   reservation: { en: 'Reservation', tr: 'Rezervasyon Yap', ru: 'Бронирование', ar: 'الحجز' },
-  route: { en: 'Route', tr: 'Yol Tarifi', ru: 'Маршрут', ar: 'الاتجاهات' },
-  rateUs: { en: 'Rate Us', tr: 'Bizi Değerlendir', ru: 'Оцените нас', ar: 'قيمنا' },
 }
 const t = (key: keyof typeof translations) => translations[key][selectedLang.value as keyof typeof translations.menu]
 </script>

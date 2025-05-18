@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 
 const languages = [
   { code: 'en', label: 'EN', icon: '🇬🇧' },

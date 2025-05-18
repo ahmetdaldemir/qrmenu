@@ -7,12 +7,6 @@
         </svg>
       </a>
       <a href="#" class="header-title">{{ tMenuTitle() }}</a>
-      <div v-if="selectedCategory" class="header-view-toggle">
-        <button class="toggle-btn" @click="isListView = !isListView" :aria-label="isListView ? 'Grid View' : 'List View'">
-          <i v-if="isListView" class="fas fa-th-large"></i>
-          <i v-else class="fas fa-list"></i>
-        </button>
-      </div>
     </div>
 
     <div class="content-wrapper">
@@ -29,12 +23,18 @@
                 <div class="category-title">{{ tCategory(category.id) }}</div>
                 <div class="category-desc">{{ tCategoryDesc(category.id) }}</div>
               </div>
-              <img :src="categoryIcons[category.id]" :alt="tCategory(category.id)" class="category-icon">
+              <i :class="categoryIcons[category.id] + ' category-icon'"></i>
             </div>
           </div>
         </div>
 
         <div v-else>
+          <div class="view-toggle">
+            <button class="toggle-btn" @click="isListView = !isListView" :aria-label="isListView ? 'Grid View' : 'List View'">
+              <i v-if="isListView" class="fas fa-th-large"></i>
+              <i v-else class="fas fa-list"></i>
+            </button>
+          </div>
           <div v-if="!isListView" class="menu-items">
             <div 
               v-for="item in filteredItems" 
@@ -201,10 +201,10 @@ const goBack = () => {
 }
 
 const categoryIcons: Record<number, string> = {
-  1: '/src/assets/icons/alcoholic-drinks.png',      // Alkollü İçecekler
-  2: '/src/assets/icons/non-alcoholic-drinks.png',  // Alkolsüz İçecekler
-  3: '/src/assets/icons/appetizers.png',            // Ara Sıcaklar
-  4: '/src/assets/icons/main-dishes.png'            // Ana Yemekler
+  1: 'fa-solid fa-martini-glass',      // Alkollü İçecekler
+  2: 'fa-solid fa-mug-saucer',         // Alkolsüz İçecekler
+  3: 'fa-solid fa-utensils',           // Ara Sıcaklar
+  4: 'fa-solid fa-drumstick-bite'      // Ana Yemekler
 }
 
 const isListView = ref(false)
@@ -262,15 +262,6 @@ fetchData()
   font-size: 20px;
   font-weight: bold;
   color: #333;
-}
-
-.header-view-toggle {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
 }
 
 .content-wrapper {
@@ -354,10 +345,11 @@ fetchData()
 }
 
 .category-icon {
-  width: 48px;
-  height: 48px;
+  font-size: 2.5rem;
+  color: #e74c3c;
   margin-left: 1.5rem;
-  object-fit: contain;
+  display: block;
+  align-self: center;
 }
 
 .back-btn {
@@ -488,6 +480,24 @@ h2.category-title {
   color: #e74c3c;
   font-weight: bold;
   margin-left: 1.5rem;
+}
+.view-toggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+.toggle-btn {
+  background: #e74c3c;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.toggle-btn:hover {
+  background: #c0392b;
 }
 
 @supports (padding-top: env(safe-area-inset-top)) {

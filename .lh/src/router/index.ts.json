@@ -1,0 +1,18 @@
+{
+    "sourceFile": "src/router/index.ts",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1747476319690,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1747476319690,
+            "name": "Commit-0",
+            "content": "import { createRouter, createWebHistory } from 'vue-router'\r\nimport Home from '../views/Home.vue'\r\nimport Menu from '../views/Menu.vue'\r\nimport Reservation from '../views/Reservation.vue'\r\nimport Route from '../views/Route.vue'\r\nimport RateUs from '../views/RateUs.vue'\r\n\r\nconst router = createRouter({\r\n  history: createWebHistory(),\r\n  routes: [\r\n    {\r\n      path: '/',\r\n      name: 'Home',\r\n      component: Home\r\n    },\r\n    {\r\n      path: '/menu',\r\n      name: 'Menu',\r\n      component: Menu\r\n    },\r\n    {\r\n      path: '/reservation',\r\n      name: 'Reservation',\r\n      component: Reservation\r\n    },\r\n    {\r\n      path: '/route',\r\n      name: 'Route',\r\n      component: Route\r\n    },\r\n    {\r\n      path: '/rate-us',\r\n      name: 'RateUs',\r\n      component: RateUs\r\n    }\r\n  ]\r\n})\r\n\r\nexport default router "
+        }
+    ]
+}
