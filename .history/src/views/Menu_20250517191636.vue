@@ -29,7 +29,7 @@
                 <div class="category-title">{{ tCategory(category.id) }}</div>
                 <div class="category-desc">{{ tCategoryDesc(category.id) }}</div>
               </div>
-              <img :src="categoryIcons[category.id]" :alt="tCategory(category.id)" class="category-icon">
+              <i :class="categoryIcons[category.id] + ' category-icon'"></i>
             </div>
           </div>
         </div>
@@ -201,10 +201,10 @@ const goBack = () => {
 }
 
 const categoryIcons: Record<number, string> = {
-  1: '/src/assets/icons/alcoholic-drinks.png',      // Alkollü İçecekler
-  2: '/src/assets/icons/non-alcoholic-drinks.png',  // Alkolsüz İçecekler
-  3: '/src/assets/icons/appetizers.png',            // Ara Sıcaklar
-  4: '/src/assets/icons/main-dishes.png'            // Ana Yemekler
+  1: 'fa-solid fa-martini-glass',      // Alkollü İçecekler
+  2: 'fa-solid fa-mug-saucer',         // Alkolsüz İçecekler
+  3: 'fa-solid fa-utensils',           // Ara Sıcaklar
+  4: 'fa-solid fa-utensils'      // Ana Yemekler
 }
 
 const isListView = ref(false)
@@ -354,10 +354,11 @@ fetchData()
 }
 
 .category-icon {
-  width: 48px;
-  height: 48px;
+  font-size: 2.5rem;
+  color: #e74c3c;
   margin-left: 1.5rem;
-  object-fit: contain;
+  display: block;
+  align-self: center;
 }
 
 .back-btn {
