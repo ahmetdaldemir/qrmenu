@@ -3,11 +3,15 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 0,
+            "activePatchIndex": 1,
             "patches": [
                 {
                     "date": 1747476346197,
                     "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1747570232593,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -46,14 +46,9 @@\n \r\n <script setup lang=\"ts\">\r\n import { ref } from 'vue'\r\n \r\n-const languages = [\r\n-  { code: 'en', label: 'EN', icon: '🇬🇧' },\r\n-  { code: 'tr', label: 'TR', icon: '🇹🇷' },\r\n-  { code: 'ru', label: 'RU', icon: '🇷🇺' },\r\n-  { code: 'ar', label: 'AR', icon: '🇸🇦' },\r\n-]\r\n+ \r\n const selectedLang = ref(localStorage.getItem('lang') || 'en')\r\n \r\n const restaurantAddress = 'Boğaz Restaurant, İstanbul, Türkiye'\r\n \r\n"
                 }
             ],
             "date": 1747476346197,

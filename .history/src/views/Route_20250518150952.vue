@@ -47,7 +47,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
- 
+const languages = [
+  { code: 'en', label: 'EN', icon: '🇬🇧' },
+  { code: 'tr', label: 'TR', icon: '🇹🇷' },
+  { code: 'ru', label: 'RU', icon: '🇷🇺' },
+  { code: 'ar', label: 'AR', icon: '🇸🇦' },
+]
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
 const restaurantAddress = 'Boğaz Restaurant, İstanbul, Türkiye'

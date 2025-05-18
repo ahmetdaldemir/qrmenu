@@ -1,0 +1,18 @@
+{
+    "sourceFile": "wragler.jsonc",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1747570101437,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1747570101437,
+            "name": "Commit-0",
+            "content": "{\r\n  \"name\": \"qr-menu\",\r\n  \"compatibility_date\": \"2025-05-16\",\r\n  \"assets\": {\r\n    \"directory\": \"./dist\"\r\n  }\r\n}"
+        }
+    ]
+}

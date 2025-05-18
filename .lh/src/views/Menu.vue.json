@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 45,
+            "activePatchIndex": 48,
             "patches": [
                 {
                     "date": 1747332384085,
@@ -188,6 +188,18 @@
                 {
                     "date": 1747565723231,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,9 +28,9 @@\n               <div class=\"category-text\">\r\n                 <div class=\"category-title\">{{ tCategory(category.id) }}</div>\r\n                 <div class=\"category-desc\">{{ tCategoryDesc(category.id) }}</div>\r\n               </div>\r\n-              <i :class=\"categoryIcons[category.id] + ' category-icon'\"></i>\r\n+              <img :src=\"categoryIcons[category.id]\" :alt=\"tCategory(category.id)\" class=\"category-icon\">\r\n             </div>\r\n           </div>\r\n         </div>\r\n \r\n@@ -200,12 +200,12 @@\n   }\r\n }\r\n \r\n const categoryIcons: Record<number, string> = {\r\n-  1: 'fa-solid fa-wine-glass',      // Alkollü İçecekler\r\n-  2: 'fa-solid fa-mug-saucer',         // Alkolsüz İçecekler\r\n-  3: 'fa-solid fa-drumstick-bite',       // Ara Sıcaklar\r\n-  4: 'fa-solid fa-utensils'      // Ana Yemekler\r\n+  1: '/src/assets/icons/alcoholic-drinks.png',      // Alkollü İçecekler\r\n+  2: '/src/assets/icons/non-alcoholic-drinks.png',  // Alkolsüz İçecekler\r\n+  3: '/src/assets/icons/appetizers.png',            // Ara Sıcaklar\r\n+  4: '/src/assets/icons/main-dishes.png'            // Ana Yemekler\r\n }\r\n \r\n const isListView = ref(false)\r\n \r\n@@ -353,13 +353,12 @@\n   text-align: left;\r\n }\r\n \r\n .category-icon {\r\n-  font-size: 2.5rem;\r\n-  color: #e74c3c;\r\n+  width: 48px;\r\n+  height: 48px;\r\n   margin-left: 1.5rem;\r\n-  display: block;\r\n-  align-self: center;\r\n+  object-fit: contain;\r\n }\r\n \r\n .back-btn {\r\n   margin-bottom: 1.5rem;\r\n"
+                },
+                {
+                    "date": 1747570221332,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -178,13 +178,9 @@\n   if (!selectedCategory.value) return []\r\n   return menuItems.value.filter(item => item.categoryId === selectedCategory.value)\r\n })\r\n \r\n-const selectedCategoryName = computed(() => {\r\n-  const cat = categories.value.find(c => c.id === selectedCategory.value)\r\n-  return cat ? cat.name : ''\r\n-})\r\n-\r\n+ \r\n const openModal = (item: MenuItem) => {\r\n   selectedItem.value = item\r\n }\r\n \r\n"
+                },
+                {
+                    "date": 1747570282084,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -90,22 +90,12 @@\n interface Category {\r\n   id: number\r\n   name: string\r\n }\r\n-\r\n-const languages = [\r\n-  { code: 'en', label: 'EN', icon: '🇬🇧' },\r\n-  { code: 'tr', label: 'TR', icon: '🇹🇷' },\r\n-  { code: 'ru', label: 'RU', icon: '🇷🇺' },\r\n-  { code: 'ar', label: 'AR', icon: '🇸🇦' },\r\n-]\r\n+ \r\n const selectedLang = ref(localStorage.getItem('lang') || 'en')\r\n \r\n-const setLang = (code: string) => {\r\n-  selectedLang.value = code\r\n-  localStorage.setItem('lang', code)\r\n-  window.location.reload()\r\n-}\r\n+ \r\n \r\n const categories = ref<Category[]>([])\r\n const menuItems = ref<MenuItem[]>([])\r\n const selectedCategory = ref<number | null>(null)\r\n"
+                },
+                {
+                    "date": 1747570349205,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -90,8 +90,9 @@\n interface Category {\r\n   id: number\r\n   name: string\r\n }\r\n+\r\n  \r\n const selectedLang = ref(localStorage.getItem('lang') || 'en')\r\n \r\n  \r\n"
                 }
             ],
             "date": 1747332384085,

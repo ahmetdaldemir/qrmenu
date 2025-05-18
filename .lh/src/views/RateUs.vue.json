@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 7,
+            "activePatchIndex": 8,
             "patches": [
                 {
                     "date": 1747476371508,
@@ -36,6 +36,10 @@
                 {
                     "date": 1747569532798,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -354,5 +354,11 @@\n   .content {\r\n     padding-top: calc(76px + env(safe-area-inset-top));\r\n   }\r\n }\r\n+\r\n+\r\n+.rate-us .content {\r\n+  top: 50px;\r\n+  position: relative;\r\n+}\r\n </style>\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1747570255930,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -121,14 +121,9 @@\n import axios from 'axios'\r\n \r\n const API_URL = 'https://agencymanager.onrender.com'\r\n \r\n-const languages = [\r\n-  { code: 'en', label: 'EN', icon: '🇬🇧' },\r\n-  { code: 'tr', label: 'TR', icon: '🇹🇷' },\r\n-  { code: 'ru', label: 'RU', icon: '🇷🇺' },\r\n-  { code: 'ar', label: 'AR', icon: '🇸🇦' },\r\n-]\r\n+ \r\n const selectedLang = ref(localStorage.getItem('lang') || 'en')\r\n \r\n const rating = ref(0)\r\n const foodRating = ref(0)\r\n"
                 }
             ],
             "date": 1747476371508,

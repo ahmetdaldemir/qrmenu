@@ -91,7 +91,6 @@ interface Category {
   id: number
   name: string
 }
-
  
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 

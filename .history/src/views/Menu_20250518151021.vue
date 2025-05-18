@@ -92,10 +92,19 @@ interface Category {
   name: string
 }
 
- 
+const languages = [
+  { code: 'en', label: 'EN', icon: '🇬🇧' },
+  { code: 'tr', label: 'TR', icon: '🇹🇷' },
+  { code: 'ru', label: 'RU', icon: '🇷🇺' },
+  { code: 'ar', label: 'AR', icon: '🇸🇦' },
+]
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
- 
+const setLang = (code: string) => {
+  selectedLang.value = code
+  localStorage.setItem('lang', code)
+  window.location.reload()
+}
 
 const categories = ref<Category[]>([])
 const menuItems = ref<MenuItem[]>([])
