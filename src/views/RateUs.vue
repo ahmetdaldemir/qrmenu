@@ -118,11 +118,10 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import axiosInstance from '../utils/axios'
 
 const API_URL = 'https://agencymanager.onrender.com'
 
- 
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
 const rating = ref(0)
@@ -134,7 +133,7 @@ const name = ref('')
 const email = ref('')
 
 const translations = {
-  rateUs: { en: 'Rate Us', tr: 'Bizi Değerlendir', ru: 'Оцените нас', ar: 'قيمنا' },
+  rateUs: { en: 'Rate Us', tr: 'Deneyiminizi Paylaşın', ru: 'Оцените нас', ar: 'قيمنا' },
   feedbackTitle: { en: 'Share Your Experience', tr: 'Deneyiminizi Paylaşın', ru: 'Поделитесь своим опытом', ar: 'شارك تجربتك' },
   feedbackSubtitle: { en: 'Your feedback helps us improve our service', tr: 'Geri bildiriminiz hizmetimizi geliştirmemize yardımcı olur', ru: 'Ваш отзыв помогает нам улучшить наш сервис', ar: 'ملاحظاتك تساعدنا على تحسين خدمتنا' },
   overallRating: { en: 'Overall Rating', tr: 'Genel Değerlendirme', ru: 'Общая оценка', ar: 'التقييم العام' },
@@ -156,7 +155,7 @@ const t = (key: keyof typeof translations) => translations[key][selectedLang.val
 
 const submitFeedback = async () => {
   try {
-    await axios.post(`${API_URL}/feedback`, {
+    await axiosInstance.post(`${API_URL}/feedback`, {
       rating: rating.value,
       foodRating: foodRating.value,
       serviceRating: serviceRating.value,

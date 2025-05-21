@@ -74,9 +74,9 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import axios from 'axios'
+import axiosInstance from '../utils/axios'
 
-const API_URL = 'https://agencymanager.onrender.com'
+const API_URL = 'http://repo.agencymanagerpro.com/'
 
 interface MenuItem {
   id: number
@@ -150,8 +150,8 @@ const tMenuTitle = () => menuTitleTranslations[selectedLang.value as 'en'|'tr'|'
 const fetchData = async () => {
   try {
     const [categoriesResponse, menuResponse] = await Promise.all([
-      axios.get(`${API_URL}/categories`),
-      axios.get(`${API_URL}/menu-items`)
+      axiosInstance.get(`${API_URL}menucategories`),
+      axiosInstance.get(`${API_URL}/menu-items`)
     ])
     categories.value = categoriesResponse.data
     menuItems.value = menuResponse.data
