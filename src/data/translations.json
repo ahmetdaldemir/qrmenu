@@ -1,0 +1,26 @@
+{
+  "en": {
+    "menu": "Menu",
+    "back": "Back",
+    "price": "Price",
+    "description": "Description"
+  },
+  "tr": {
+    "menu": "Menü",
+    "back": "Geri",
+    "price": "Fiyat",
+    "description": "Açıklama"
+  },
+  "ru": {
+    "menu": "Меню",
+    "back": "Назад",
+    "price": "Цена",
+    "description": "Описание"
+  },
+  "ar": {
+    "menu": "القائمة",
+    "back": "رجوع",
+    "price": "السعر",
+    "description": "الوصف"
+  }
+} 
