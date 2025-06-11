@@ -1,13 +1,14 @@
 <template>
   <div class="rate-us">
-    <div class="header header-icon-center">
-      <a href="/" class="header-icon header-icon-1" data-back-button>
-        <svg width="24" height="24" viewBox="0 0 24 24">
-          <path d="M15 18l-6-6 6-6" stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a href="#" class="header-title">{{ t('rateUs') }}</a>
+    <div class="top-bar">
+      <button class="back-btn" @click="goBack">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="brand">
+        <img v-if="tenant?.logoUrl" :src="`https://repo.agencymanagerpro.com/${tenant.logoUrl}`" alt="Logo" class="logo" />
+      </div>
     </div>
+
 
     <div class="content">
       <div class="feedback-form">
@@ -118,9 +119,14 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import axiosInstance from '../utils/axios'
+import { API_URL, API_ENDPOINTS } from '../constants'
+import swal from 'sweetalert2'
 
-const API_URL = 'https://agencymanager.onrender.com'
+const tenant = ref<any>(null)
+const tenantId = localStorage.getItem('tenantId') || '1'
+const router = useRouter()
 
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
@@ -155,7 +161,7 @@ const t = (key: keyof typeof translations) => translations[key][selectedLang.val
 
 const submitFeedback = async () => {
   try {
-    await axiosInstance.post(`${API_URL}/feedback`, {
+    await axiosInstance.post(`${API_URL}${API_ENDPOINTS.FEEDBACKS}`, {
       rating: rating.value,
       foodRating: foodRating.value,
       serviceRating: serviceRating.value,
@@ -174,15 +180,37 @@ const submitFeedback = async () => {
     name.value = ''
     email.value = ''
     
-    alert(t('submitSuccess'))
+    swal.fire({
+      title: t('submitSuccess'),
+      icon: 'success',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#e74c3c'
+    })
   } catch (error) {
     console.error('Error submitting feedback:', error)
-    alert(t('submitError'))
+    swal.fire({
+      title: t('submitError'),
+      icon: 'error',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#e74c3c'
+    })
   }
+}
+const fetchTenant = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/tenants/${tenantId}`)
+    tenant.value = response.data
+  } catch (error) {
+    console.error('Error fetching tenant:', error)
+  }
+}
+const goBack = () => {
+  router.back()
 }
 
 onMounted(() => {
-  // İhtiyaç olmadığı için kaldırıldı
+  fetchTenant()
+
 })
 </script>
 
@@ -194,6 +222,40 @@ onMounted(() => {
   flex-direction: column;
 }
 
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  padding: 0.5rem 1.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #333;
+  display: flex;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  align-items: right;
+  gap: 1rem;
+}
+
+.logo {
+  max-width: 80px;
+  border-radius: 8px;
+  background: #fff;
+  object-fit: contain;
+}
 .header {
   position: fixed;
   top: 0;
@@ -243,6 +305,7 @@ onMounted(() => {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 100px;
 }
 
 .feedback-form h2 {

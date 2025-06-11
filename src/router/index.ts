@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Menu from '../views/Menu.vue'
 import Reservation from '../views/Reservation.vue'
 import Route from '../views/Route.vue'
 import RateUs from '../views/RateUs.vue'
+import Souvenirs from '../views/Souvenirs.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/',
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/rate-us',
       name: 'RateUs',
       component: RateUs
+    },
+    {
+      path: '/souvenirs',
+      name: 'Souvenirs',
+      component: Souvenirs
     }
   ]
 })

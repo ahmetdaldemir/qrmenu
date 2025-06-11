@@ -1,9 +1,11 @@
 <template>
   <div class="home">
     <div class="language-select">
-      <button v-for="lang in languages" :key="lang.code" :class="['lang-btn', { active: selectedLang === lang.code }]" @click="setLang(lang.code)" :aria-label="lang.label">
-        <span v-if="lang.icon" v-html="lang.icon"></span>
-        <span v-else>{{ lang.label }}</span>
+      <button v-for="lang in languages" :key="lang.id" :class="['lang-btn', { active: selectedLang === lang.code }]" @click="setLang(lang.id,lang.code)" :aria-label="lang.name">
+        <span v-if="lang.flag">
+          <img :src="`/flags/${lang.flag}`" :alt="lang.name" class="lang-flag" />
+        </span>
+        <span v-else>{{ lang.name }}</span>
       </button>
     </div>
     <div class="hero">
@@ -12,12 +14,13 @@
         <img src="/logo.png" alt="Logo" class="logo" />
         <h1 class="restaurant-name">Boğaz Restaurant</h1>
       </header>
-      <div class="content">
+      <div class="content" style="top: 10px !important;">
         <div class="buttons">
           <router-link to="/menu" class="btn main">{{ t('menu') }}</router-link>
           <router-link to="/reservation" class="btn secondary">{{ t('reservation') }}</router-link>
           <router-link to="/route" class="btn main">{{ t('route') }}</router-link>
           <router-link to="/rate-us" class="btn secondary">{{ t('rateUs') }}</router-link>
+          <router-link to="/souvenirs" class="btn main">{{ t('souvenirs') }}</router-link>
         </div>
       </div>
     </div>
@@ -30,29 +33,59 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { API_URL, API_ENDPOINTS } from '../constants'
+import axiosInstance from '../utils/axios'
 
-const languages = [
-  { code: 'en', label: 'EN', icon: '🇬🇧' },
-  { code: 'tr', label: 'TR', icon: '🇹🇷' },
-  { code: 'ru', label: 'RU', icon: '🇷🇺' },
-  { code: 'ar', label: 'AR', icon: '🇸🇦' },
-]
-const selectedLang = ref(localStorage.getItem('lang') || 'en')
-
-const setLang = (code: string) => {
-  selectedLang.value = code
-  localStorage.setItem('lang', code)
-  window.location.reload()
+type Language = {
+  id: number
+  name: string
+  code: string
+  flag?: string
+  createdAt?: string
+  updatedAt?: string
 }
+
+const loading = ref(false)
+const error = ref<string | null>(null)
+const languages = ref<Language[]>([])
+
+const fetchLanguages = async () => {
+  loading.value = true
+  error.value = null
+  try {
+    const response = await axiosInstance.get(`${API_URL}${API_ENDPOINTS.LANGUAGES}`)
+    languages.value = response.data
+  } catch (err) {
+    error.value = 'Failed to fetch categories'
+    console.error(err)
+  } finally {
+    loading.value = false
+  }
+}
+
+
+const selectedLang = ref(localStorage.getItem('langId') || '1')
+selectedLang.value = languages.value.find(lang => lang.id === parseInt(selectedLang.value))?.code || 'en'
+
+const setLang = (id: number, code: string) => {
+  selectedLang.value = code
+  localStorage.setItem('langId', id.toString())
+}
+
 
 const translations = {
   menu: { en: 'Menu', tr: 'Menü', ru: 'Меню', ar: 'القائمة' },
   reservation: { en: 'Reservation', tr: 'Rezervasyon Yap', ru: 'Бронирование', ar: 'الحجز' },
   route: { en: 'Route', tr: 'Yol Tarifi', ru: 'Маршрут', ar: 'الاتجاهات' },
   rateUs: { en: 'Rate Us', tr: 'Bizi Değerlendir', ru: 'Оцените нас', ar: 'قيمنا' },
+  souvenirs: { en: 'Souvenirs', tr: 'Sovlar', ru: 'Сувениры', ar: 'الهدايا التذكارية' }
 }
 const t = (key: keyof typeof translations) => translations[key][selectedLang.value as keyof typeof translations.menu]
+
+onMounted(() => {
+  fetchLanguages()
+})
 </script>
 
 <style scoped>
@@ -62,6 +95,15 @@ const t = (key: keyof typeof translations) => translations[key][selectedLang.val
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
+}
+
+.lang-flag {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 
 .home {

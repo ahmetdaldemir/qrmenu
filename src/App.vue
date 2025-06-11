@@ -15,9 +15,10 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Inter', 'Roboto', Arial, sans-serif;
+  background: #f8f9fa;
+  color: #222;
   line-height: 1.6;
-  background-color: #f5f5f5;
 }
 
 h1, h2, h3 {
@@ -29,7 +30,7 @@ button {
 }
 
 a {
-  text-decoration: none;
   color: inherit;
+  text-decoration: none;
 }
 </style>

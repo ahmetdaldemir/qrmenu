@@ -1,13 +1,12 @@
 import axiosInstance from '../utils/axios'
-
-const API_URL = 'https://repo.agencymanagerpro.com'
+import { API_URL, API_ENDPOINTS } from '../constants'
 
 // Tek bir metni çevir
 export const translateText = async (text: string, targetLang: string): Promise<string> => {
   if (!text || targetLang === 'tr') return text
 
   try {
-    const response = await axiosInstance.post(`${API_URL}/common/translate`, {
+    const response = await axiosInstance.post(`${API_URL}${API_ENDPOINTS.TRANSLATE}`, {
       text,
       targetLang
     })

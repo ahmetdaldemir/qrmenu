@@ -1,12 +1,13 @@
 <template>
+
   <div class="route">
-    <div class="header header-icon-center">
-      <a href="/" class="header-icon header-icon-1" data-back-button>
-        <svg width="24" height="24" viewBox="0 0 24 24">
-          <path d="M15 18l-6-6 6-6" stroke="#e74c3c" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-      <a href="#" class="header-title">{{ t('route') }}</a>
+    <div class="top-bar">
+      <button class="back-btn" @click="goBack">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="brand">
+        <img v-if="tenant?.logoUrl" :src="`https://repo.agencymanagerpro.com/${tenant.logoUrl}`" alt="Logo" class="logo" />
+      </div>
     </div>
 
     <div class="content">
@@ -18,21 +19,20 @@
           loading="lazy"
           allowfullscreen
           referrerpolicy="no-referrer-when-downgrade"
-          :src="`https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=${encodeURIComponent(restaurantAddress)}`">
+          :src="`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.636817350508!2d28.993596!3d41.033201!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14cab77bdf81908d%3A0x8f5f54b98efa531e!2zS2FiYXRhxZ8!5e0!3m2!1sen!2str!4v1749627351378!5m2!1sen!2str`">
         </iframe>
       </div>
-
       <div class="address-info">
         <h2>{{ t('address') }}</h2>
         <p>{{ restaurantAddress }}</p>
         <div class="contact-info">
           <div class="info-item">
             <i class="fas fa-phone"></i>
-            <span>+90 555 123 4567</span>
+            <span>+905494583434</span>
           </div>
           <div class="info-item">
             <i class="fas fa-envelope"></i>
-            <span>info@bogazrestaurant.com</span>
+            <span>info@orienthouseistanbul.com</span>
           </div>
           <div class="info-item">
             <i class="fas fa-clock"></i>
@@ -45,20 +45,41 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 
- 
+import axiosInstance from '../utils/axios'
+import { API_URL } from '../constants'
+
+const tenant = ref<any>(null)
+const tenantId = localStorage.getItem('tenantId') || '1'
+const router = useRouter()
+
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
-const restaurantAddress = 'Boğaz Restaurant, İstanbul, Türkiye'
+const restaurantAddress = 'Kabataş İskele, İstanbul, Türkiye'
 
 const translations = {
   route: { en: 'Route', tr: 'Yol Tarifi', ru: 'Маршрут', ar: 'الاتجاهات' },
   address: { en: 'Our Address', tr: 'Adresimiz', ru: 'Наш адрес', ar: 'عنواننا' },
   workingHours: { en: 'Mon-Sun: 10:00 - 23:00', tr: 'Pzt-Paz: 10:00 - 23:00', ru: 'Пн-Вс: 10:00 - 23:00', ar: 'الاثنين-الأحد: 10:00 - 23:00' }
 }
+const fetchTenant = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}/tenants/${tenantId}`)
+    tenant.value = response.data
+  } catch (error) {
+    console.error('Error fetching tenant:', error)
+  }
+}
+const goBack = () => {
+  router.back()
+}
 
 const t = (key: keyof typeof translations) => translations[key][selectedLang.value as keyof typeof translations.route]
+onMounted(() => {
+  fetchTenant()
+})
 </script>
 
 <style scoped>
@@ -68,40 +89,7 @@ const t = (key: keyof typeof translations) => translations[key][selectedLang.val
   padding-top: 56px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  height: 56px;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  z-index: 1100;
-}
 
-.header-icon {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  cursor: pointer;
-}
-
-.header-title {
-  font-size: 20px;
-  font-weight: bold;
-  color: #333;
-}
-
-.content {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
 
 .map-container {
   width: 100%;
@@ -109,6 +97,7 @@ const t = (key: keyof typeof translations) => translations[key][selectedLang.val
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   margin-bottom: 30px;
+  margin-top: 140px;
 }
 
 .address-info {
