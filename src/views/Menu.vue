@@ -114,7 +114,7 @@ onMounted(() => {
 
 
 .categories-section {
-  margin-top: 8rem;
+  margin-top: 1em;
 }
 
 .categories-grid {
@@ -201,10 +201,7 @@ onMounted(() => {
 .error {
   color: red;
 }
-
-.menu-items-section {
-  margin-top: 2rem;
-}
+ 
 
 .back-button {
   display: inline-flex;

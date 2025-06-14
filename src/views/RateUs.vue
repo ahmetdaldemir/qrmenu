@@ -125,7 +125,7 @@ import { API_URL, API_ENDPOINTS } from '../constants'
 import swal from 'sweetalert2'
 
 const tenant = ref<any>(null)
-const tenantId = localStorage.getItem('tenantId') || '1'
+const tenantId = localStorage.getItem('tenant_id') || '1'
 const router = useRouter()
 
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
@@ -289,7 +289,6 @@ onMounted(() => {
   flex: 1;
   width: 100%;
   padding: 20px;
-  padding-top: 76px; /* header height + padding */
   padding-bottom: 32px;
   overflow-y: auto;
   margin: 0 auto;
@@ -305,7 +304,6 @@ onMounted(() => {
   max-width: 400px;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 100px;
 }
 
 .feedback-form h2 {
@@ -389,7 +387,6 @@ input:focus, textarea:focus {
 @media (max-width: 768px) {
   .content {
     padding: 15px;
-    padding-top: 76px;
     padding-bottom: 32px;
   }
   .feedback-form {
@@ -407,15 +404,11 @@ input:focus, textarea:focus {
     padding-top: env(safe-area-inset-top);
     height: calc(56px + env(safe-area-inset-top));
   }
-  
-  .content {
-    padding-top: calc(76px + env(safe-area-inset-top));
-  }
+
 }
 
 
 .rate-us .content {
-  top: 50px;
   position: relative;
 }
 </style>

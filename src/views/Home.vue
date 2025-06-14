@@ -12,7 +12,7 @@
       <div class="overlay"></div>
       <header class="header">
         <img src="/logo.png" alt="Logo" class="logo" />
-        <h1 class="restaurant-name">Boğaz Restaurant</h1>
+        <h1 class="restaurant-name">Orient Bosphorus</h1>
       </header>
       <div class="content" style="top: 10px !important;">
         <div class="buttons">
@@ -24,10 +24,12 @@
         </div>
       </div>
     </div>
+   
+
     <footer class="social-media">
-      <a href="#" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-      <a href="#" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-      <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+      <a href="https://www.facebook.com/orientbosphoruss" target="_blank" class="social-icon" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="https://www.instagram.com/orientbosphorus" target="_blank" class="social-icon" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.youtube.com/channel/UC9-0-_0000000000000000000000000000000000" target="_blank" class="social-icon" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
     </footer>
   </div>
 </template>
@@ -75,11 +77,11 @@ const setLang = (id: number, code: string) => {
 
 
 const translations = {
-  menu: { en: 'Menu', tr: 'Menü', ru: 'Меню', ar: 'القائمة' },
-  reservation: { en: 'Reservation', tr: 'Rezervasyon Yap', ru: 'Бронирование', ar: 'الحجز' },
-  route: { en: 'Route', tr: 'Yol Tarifi', ru: 'Маршрут', ar: 'الاتجاهات' },
-  rateUs: { en: 'Rate Us', tr: 'Bizi Değerlendir', ru: 'Оцените нас', ar: 'قيمنا' },
-  souvenirs: { en: 'Souvenirs', tr: 'Sovlar', ru: 'Сувениры', ar: 'الهدايا التذكارية' }
+  menu: { en: 'Menu', tr: 'Menü', ru: 'Меню',de: 'Menü', ar: 'القائمة' },
+  reservation: { en: 'Reservation', tr: 'Rezervasyon Yap',de: 'Buchung', ru: 'Бронирование', ar: 'الحجز' },
+  route: { en: 'Route', tr: 'Yol Tarifi', de: 'Route', ru: 'Маршрут', ar: 'الاتجاهات' },
+  rateUs: { en: 'Rate Us', tr: 'Bizi Değerlendir', de: 'Bewerten Sie uns', ru: 'Оцените нас', ar: 'قيمنا' },
+  souvenirs: { en: 'Souvenirs', tr: 'Sovlar', de: 'Souvenirs', ru: 'Сувениры', ar: 'الهدايا التذكارية' }
 }
 const t = (key: keyof typeof translations) => translations[key][selectedLang.value as keyof typeof translations.menu]
 

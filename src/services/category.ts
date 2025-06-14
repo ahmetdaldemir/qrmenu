@@ -21,7 +21,6 @@ export interface Category {
 
 export const getCategories = async (tenantId: string): Promise<Category[]> => {
   try {
-    console.log('Fetching categories with tenant_id:', tenantId)
     const response = await axiosInstance.get(`${API_URL}${API_ENDPOINTS.MENU_CATEGORIES}`, {
       params: {
         tenant_id: tenantId

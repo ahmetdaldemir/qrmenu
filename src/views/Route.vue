@@ -52,7 +52,7 @@ import axiosInstance from '../utils/axios'
 import { API_URL } from '../constants'
 
 const tenant = ref<any>(null)
-const tenantId = localStorage.getItem('tenantId') || '1'
+const tenantId = localStorage.getItem('tenant_id') || '1'
 const router = useRouter()
 
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
@@ -86,7 +86,6 @@ onMounted(() => {
 .route {
   min-height: 100vh;
   background: #f5f5f5;
-  padding-top: 56px;
 }
 
 
@@ -97,7 +96,6 @@ onMounted(() => {
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1);
   margin-bottom: 30px;
-  margin-top: 140px;
 }
 
 .address-info {

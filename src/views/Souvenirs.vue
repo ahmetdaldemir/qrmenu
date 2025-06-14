@@ -28,7 +28,7 @@ import { API_URL } from '../constants'
 
 const router = useRouter()
 const tenant = ref<any>(null)
-const tenantId = localStorage.getItem('tenantId') || '1'
+const tenantId = localStorage.getItem('tenant_id') || '1'
 const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
 const translations = {
@@ -40,24 +40,53 @@ const t = (key: keyof typeof translations) => translations[key][selectedLang.val
 const souvenirs = [
   {
     id: 1,
-    image: '/souvenirs/coffee-set.jpg'
+    image: '/souvenirs/11.jpeg'
   },
   {
     id: 2,
-    image: '/souvenirs/ceramic-plate.jpg'
+    image: '/souvenirs/12.jpeg'
   },
   {
     id: 3,
-    image: '/souvenirs/evil-eye.jpg'
+    image: '/souvenirs/13.jpeg'
   },
   {
     id: 4,
-    image: '/souvenirs/evil-eye.jpg'
+    image: '/souvenirs/14.jpeg'
   },
   {
     id: 5,
-    image: '/souvenirs/evil-eye.jpg'
-  }
+    image: '/souvenirs/15.jpeg'
+  },
+  {
+    id: 6,
+    image: '/souvenirs/16.jpeg'
+  },
+  {
+    id: 7,
+    image: '/souvenirs/17.jpeg'
+  },
+  {
+    id: 8,
+    image: '/souvenirs/18.jpeg'
+  },
+  {
+    id: 9,
+    image: '/souvenirs/19.jpeg'
+  },
+  {
+    id: 10,
+    image: '/souvenirs/21.jpeg'
+  },
+  {
+    id: 11,
+    image: '/souvenirs/22.jpeg'
+  },
+  {
+    id: 12,
+    image: '/souvenirs/110.jpeg'
+  },
+  
 ]
 
 const fetchTenant = async () => {
@@ -82,7 +111,7 @@ onMounted(() => {
 .souvenirs {
   min-height: 100vh;
   background: #f5f5f5;
-  padding-top: 56px;
+ 
 }
  
 .content {
