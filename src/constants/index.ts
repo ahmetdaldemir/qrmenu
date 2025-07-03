@@ -1,6 +1,6 @@
 // API URLs
-export const API_URL = 'https://agencymanager.onrender.com'
-// export const API_URL = 'http://localhost:3100' // Uncomment for local development
+ export const API_URL = 'https://repo.agencymanagerpro.com'
+//export const API_URL = 'http://localhost:3100' // Uncomment for local development
 
 // API Endpoints
 export const API_ENDPOINTS = {

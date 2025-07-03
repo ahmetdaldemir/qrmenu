@@ -6,6 +6,8 @@ const axiosInstance = axios.create({
   timeout: 10000
 })
 
+axiosInstance.defaults.withCredentials = true;
+
 // Request interceptor
 axiosInstance.interceptors.request.use(
   (config) => {

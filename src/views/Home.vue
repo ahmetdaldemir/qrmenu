@@ -81,7 +81,7 @@ const translations = {
   reservation: { en: 'Reservation', tr: 'Rezervasyon Yap',de: 'Buchung', ru: 'Бронирование', ar: 'الحجز' },
   route: { en: 'Route', tr: 'Yol Tarifi', de: 'Route', ru: 'Маршрут', ar: 'الاتجاهات' },
   rateUs: { en: 'Rate Us', tr: 'Bizi Değerlendir', de: 'Bewerten Sie uns', ru: 'Оцените нас', ar: 'قيمنا' },
-  souvenirs: { en: 'Souvenirs', tr: 'Sovlar', de: 'Souvenirs', ru: 'Сувениры', ar: 'الهدايا التذكارية' }
+  souvenirs: { en: 'Show', tr: 'Şovlar', de: 'Show', ru: 'Сувениры', ar: 'الهدايا التذكارية' }
 }
 const t = (key: keyof typeof translations) => translations[key][selectedLang.value as keyof typeof translations.menu]
 

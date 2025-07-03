@@ -2,11 +2,52 @@
   <form @submit.prevent="submit">
     <div class="banner">
       <p class="desc">
-        Lütfen bilgilerinizi eksiksiz ve doğru giriniz. Rezervasyonunuzun
-        ardından güvenli ödeme ekranı açılacaktır.
+        {{ t('reservation.banner') }}
       </p>
     </div>
     <div v-if="!showPayment">
+
+
+     
+
+
+      <label v-if="packet">
+        <span>
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z" fill="#6366f1" />
+          </svg>
+          {{ t('reservation.selectPackage') }}</span>
+        <div class="radio-group">
+          <label v-for="pricing in packages[0]?.tourPricings" :key="pricing.id" class="radio-label">
+            <input type="radio" v-model="form.packet_id" :value="pricing.id" class="radio-input">
+            <span class="radio-custom">
+              <span class="radio-title">{{ pricing.packet }}</span>
+              <span class="radio-description">
+                Yetişkin: {{ pricing.adultPrice }}€
+              </span>
+            </span>
+          </label>
+        </div>
+      </label>
+      <label v-else>
+        <span>
+          <svg class="icon" viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 119.5 9 2.5 2.5 0 0112 11.5z" fill="#6366f1" />
+          </svg>
+          {{ t('reservation.selectMenu') }}</span>
+        <div class="radio-group">
+          <label v-for="pricing in packages[0]?.tourPricings" :key="pricing.id" class="radio-label">
+            <input type="radio" v-model="form.packet_id" :value="pricing.id" class="radio-input">
+            <span class="radio-custom">
+              <span class="radio-title">{{ pricing.packet }}</span>
+              <span class="radio-description">
+                Yetişkin: {{ pricing.adultPrice }}€
+              </span>
+            </span>
+          </label>
+        </div>
+      </label>
+
       <label>
         <span
           ><svg class="icon" viewBox="0 0 24 24">
@@ -15,9 +56,9 @@
               fill="#6366f1"
             />
           </svg>
-          Ad Soyad</span
+          {{ t('reservation.fullName') }}</span
         >
-        <input v-model="form.fullname" placeholder="Ad Soyad" />
+        <input v-model="form.fullname" :placeholder="t('reservation.fullName')" />
       </label>
       <label>
         <span
@@ -27,9 +68,9 @@
               fill="#6366f1"
             />
           </svg>
-          Email</span
+          {{ t('reservation.email') }}</span
         >
-        <input v-model="form.email" placeholder="Email" />
+        <input v-model="form.email" :placeholder="t('reservation.email')" />
       </label>
       <label>
         <span
@@ -39,7 +80,7 @@
               fill="#6366f1"
             />
           </svg>
-          Telefon</span
+          {{ t('reservation.phone') }}</span
         >
         <div class="phone-row">
           <div class="country-select-wrapper">
@@ -55,7 +96,7 @@
             <div v-if="showCountryDropdown" class="country-dropdown">
               <input
                 v-model="countrySearch"
-                placeholder="Ülke ara..."
+                :placeholder="t('reservation.searchCountry')"
                 class="country-search"
                 @input="filterCountries"
               />
@@ -78,7 +119,7 @@
           <input
             v-model="form.phone"
             style="margin-bottom: 0"
-            placeholder="Telefon"
+            :placeholder="t('reservation.phone')"
             @input="validatePhone"
             @keypress="(e) => !/[0-9]/.test(e.key) && e.preventDefault()"
             class="phone-input"
@@ -95,12 +136,12 @@
                 fill="#6366f1"
               />
             </svg>
-            Otel Adı</span
+            {{ t('reservation.hotelName') }}</span
           >
           <input
             v-model="form.hotel"
             style="width: auto"
-            placeholder="Otel Adı"
+            :placeholder="t('reservation.hotelName')"
           />
         </label>
         <label style="flex: 1">
@@ -111,9 +152,9 @@
                 fill="#6366f1"
               />
             </svg>
-            Otel Adı</span
+            {{ t('reservation.room') }}</span
           >
-          <input v-model="form.room" style="width: auto" placeholder="Room" />
+          <input v-model="form.room" style="width: auto" :placeholder="t('reservation.room')" />
         </label>
         <label style="flex: 1">
           <span
@@ -123,7 +164,7 @@
                 fill="#6366f1"
               />
             </svg>
-            Tarih</span
+            {{ t('reservation.date') }}</span
           >
           <Datepicker
             v-model="form.date"
@@ -132,7 +173,7 @@
             :min-date="new Date()"
             format="dd.MM.yyyy"
             locale="tr"
-            placeholder="Tarih seçin"
+            :placeholder="t('reservation.selectDate')"
             class="custom-datepicker"
           />
         </label>
@@ -146,7 +187,7 @@
                 fill="#6366f1"
               />
             </svg>
-            Yetişkin
+            {{ t('reservation.adult') }}
           </span>
           <select v-model.number="form.adult">
             <option v-for="n in 10" :key="n" :value="n">{{ n }}</option>
@@ -160,7 +201,7 @@
                 fill="#6366f1"
               />
             </svg>
-            Çocuk
+            {{ t('reservation.child') }}
           </span>
           <select v-model.number="form.child">
             <option v-for="n in 11" :key="n - 1" :value="n - 1">
@@ -176,32 +217,32 @@
             fill="#fff"
           />
         </svg>
-        {{ loading ? "Hesaplanıyor..." : "Devam ve Hesapla" }}
+        {{ loading ? t('reservation.calculating') : t('reservation.continueAndCalculate') }}
       </button>
     </div>
 
     <div v-show="showPayment" class="payment-section">
-      <h3>Ödeme Bilgileri</h3>
+      <h3>{{ t('reservation.paymentInfo') }}</h3>
       <div class="calculation-summary">
-        <h4>Rezervasyon Özeti</h4>
+        <h4>{{ t('reservation.reservationSummary') }}</h4>
         <div class="summary-item">
-          <span>Otel:</span>
+          <span>{{ t('reservation.hotel') }}</span>
           <span>{{ form.hotel }}</span>
         </div>
         <div class="summary-item">
-          <span>Room:</span>
+          <span>{{ t('reservation.roomLabel') }}</span>
           <span>{{ form.room }}</span>
         </div>
         <div class="summary-item">
-          <span>Tarih:</span>
+          <span>{{ t('reservation.dateLabel') }}</span>
           <span>{{ form.date }}</span>
         </div>
         <div class="summary-item">
-          <span>Kişi Sayısı:</span>
-          <span>{{ form.adult }} Yetişkin, {{ form.child }} Çocuk</span>
+          <span>{{ t('reservation.personCount') }}</span>
+          <span>{{ form.adult }} {{ t('reservation.adult') }}, {{ form.child }} {{ t('reservation.child') }}</span>
         </div>
         <div class="summary-item total">
-          <span>Toplam Tutar:</span>
+          <span>{{ t('reservation.totalAmount') }}</span>
           <span
             >{{ calculationResult?.totalPrice?.toFixed(2) || "0.00" }} €</span
           >
@@ -217,7 +258,7 @@
                 fill="#6366f1"
               />
             </svg>
-            Kart Numarası</span
+            {{ t('reservation.cardNumber') }}</span
           >
           <input
             type="text"
@@ -234,7 +275,7 @@
                 fill="#6366f1"
               />
             </svg>
-            Kart Üzerindeki İsim</span
+            {{ t('reservation.cardHolder') }}</span
           >
           <input type="text" placeholder="John Doe" v-model="form.cardHolder" />
         </label>
@@ -247,7 +288,7 @@
                   fill="#6366f1"
                 />
               </svg>
-              Son Kullanma Ay</span
+              {{ t('reservation.expiryMonth') }}</span
             >
             <select v-model="form.expiryMonth">
               <option
@@ -267,7 +308,7 @@
                   fill="#6366f1"
                 />
               </svg>
-              Son Kullanma Yıl</span
+              {{ t('reservation.expiryYear') }}</span
             >
             <select v-model="form.expiryYear">
               <option
@@ -287,7 +328,7 @@
                   fill="#6366f1"
                 />
               </svg>
-              CVV</span
+              {{ t('reservation.cvv') }}</span
             >
             <input
               type="text"
@@ -304,13 +345,13 @@
               fill="#fff"
             />
           </svg>
-          {{ loading ? "İşleniyor..." : "Ödemeyi Tamamla" }}
+          {{ loading ? t('reservation.processing') : t('reservation.completePayment') }}
         </button>
       </div>
     </div>
 
     <p class="privacy">
-      Bilgileriniz gizli tutulur ve güvenli ödeme altyapısı kullanılır.
+      {{ t('reservation.privacy') }}
     </p>
   </form>
 </template>
@@ -323,6 +364,7 @@ import axios from "axios";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { API_URL } from "../constants";
+import { useTranslation } from "../composables/useTranslation";
 interface Country {
   code: string;
   name: string;
@@ -338,6 +380,26 @@ interface CalculationResult {
   message?: string;
 }
 
+interface TourPricing {
+  id: number;
+  tour_id: number;
+  supplier_id: number;
+  adultPrice: string;
+  childPrice: string;
+  infantPrice: string;
+  motor: string;
+  packet: string;
+}
+
+interface Tour {
+  id: number;
+  name: string;
+  description: string;
+  isActive: boolean;
+  isPacket: boolean;
+  tourPricings: TourPricing[];
+}
+
 const TOUR_ID = "1";
 const emit = defineEmits(["submit"]);
 const loading = ref(false);
@@ -349,8 +411,15 @@ const selectedCountry = ref<Country | null>(null);
 const showCountryDropdown = ref(false);
 const countrySearch = ref("");
 const filteredCountries = ref<Country[]>([]);
-
+const packages = ref<Tour[]>([]);
+const packet = ref<boolean>(false);
 const router = useRouter();
+
+
+const { t } = useTranslation();
+
+
+
 
 onMounted(async () => {
   try {
@@ -382,6 +451,7 @@ onMounted(async () => {
       confirmButtonText: "Tamam",
     });
   }
+  fetchPackages();
 });
 
 const form = reactive({
@@ -393,6 +463,7 @@ const form = reactive({
   date: new Date(),
   adult: 1,
   child: 0,
+  packet_id: "",
   cardNumber: "",
   cardHolder: "",
   expiryMonth: new Date().getMonth() + 1,
@@ -420,7 +491,10 @@ function validatePhone() {
 
   // Validasyon kontrolü
   if (digits.length !== selectedCountry.value.phoneLength) {
-    phoneError.value = `${selectedCountry.value.name} için ${selectedCountry.value.phoneLength} haneli telefon giriniz.`;
+    phoneError.value = t('reservation.phoneError', {
+      country: selectedCountry.value.name,
+      length: selectedCountry.value.phoneLength
+    });
   } else {
     phoneError.value = "";
   }
@@ -455,7 +529,7 @@ async function calculate() {
       Swal.fire({
         icon: "error",
         title: "Hata!",
-        text: "Hesaplama sırasında bir hata oluştu. Lütfen tekrar deneyin.",
+        text: t('reservation.calculationError'),
         confirmButtonText: "Tamam",
       });
     }
@@ -464,7 +538,7 @@ async function calculate() {
     Swal.fire({
       icon: "error",
       title: "Hata!",
-      text: "Hesaplama sırasında bir hata oluştu. Lütfen tekrar deneyin.",
+      text: t('reservation.calculationError'),
       confirmButtonText: "Tamam",
     });
   } finally {
@@ -504,8 +578,8 @@ async function submitPayment() {
       localStorage.setItem("reservationId", response.data.data?.orderId);
       Swal.fire({
         icon: "success",
-        title: "Başarılı!",
-        text: "Ödeme işlemi başarıyla tamamlandı.",
+        title: t('reservation.success'),
+        text: t('reservation.paymentSuccess'),
         confirmButtonText: "Tamam",
       }).then(() => {
         router.push("/success");
@@ -519,13 +593,35 @@ async function submitPayment() {
     Swal.fire({
       icon: "error",
       title: "Hata!",
-      text: (error as Error).message || "Ödeme işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin.",      confirmButtonText: "Tamam",
+      text: (error as Error).message || t('reservation.paymentError'),
+      confirmButtonText: "Tamam",
     });
   } finally {
     loading.value = false;
   }
 }
 
+async function fetchPackages() {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.get(`${API_URL}/tours/1`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    packages.value = [response.data];
+    packet.value = response.data.isPacket;
+    console.log(packet.value);
+  } catch (error) {
+    console.error("Paket bilgileri yüklenirken hata oluştu:", error);
+    Swal.fire({
+      icon: "error",
+      title: "Hata!",
+      text: t('reservation.packageError'),
+      confirmButtonText: "Tamam",
+    });
+  }
+}
 
 function submit() {
   validatePhone();
@@ -580,7 +676,7 @@ form {
   box-shadow: 0 8px 32px 0 rgba(60, 72, 88, 0.12);
   padding: 2.5rem 2rem;
   max-width: 700px;
-  margin: 2rem auto;
+  margin: 0rem auto;
   position: relative;
   border: 1px solid #f1f1f1;
   color: #000;
@@ -954,6 +1050,66 @@ select {
 @media (max-width: 600px) {
   .select-row {
     gap: 0.7rem;
+  }
+}
+
+.radio-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.radio-label {
+  flex: 1;
+  cursor: pointer;
+  position: relative;
+}
+
+.radio-input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.radio-custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+.radio-input:checked + .radio-custom {
+  border-color: #6366f1;
+  background: #f0f0ff;
+  box-shadow: 0 0 0 2px #6366f133;
+}
+
+.radio-title {
+  font-weight: 600;
+  color: #222;
+  font-size: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.radio-description {
+  font-size: 0.4rem;
+  color: #666;
+}
+
+.radio-label:hover .radio-custom {
+  border-color: #6366f1;
+  background: #f0f0ff;
+}
+
+@media (max-width: 600px) {
+  .radio-group {
+    gap: 0.5rem;
   }
 }
 </style>
