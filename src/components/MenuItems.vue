@@ -28,7 +28,7 @@
             />
             <div class="menu-item-info">
               <h3>{{ item.translations[languageId]?.name }}</h3>
-              <p class="price">{{ item.price }} €</p>
+              <p class="price">{{ item.price !== '0.00' ? item.price + ' €' : 'For Price Information Please Ask' }} </p>
             </div>
           </div>
         </div>
