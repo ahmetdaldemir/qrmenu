@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import axiosInstance from '../utils/axios'
-
-const API_URL = 'http://repo.agencymanagerpro.com'
+import { API_URL, API_ENDPOINTS } from '../constants'
 
 interface AuthState {
   token: string | null
@@ -17,8 +16,7 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login() {
       try {
-        // Otomatik login için sabit kullanıcı bilgileri
-        const response = await axiosInstance.post(`${API_URL}/common/login`, {
+        const response = await axiosInstance.post(`${API_URL}${API_ENDPOINTS.LOGIN}`, {
           email: 'admin@orienthouseturkey.com',
           password: 'Default123'
         })
@@ -29,7 +27,6 @@ export const useAuthStore = defineStore('auth', {
         this.isAuthenticated = true
         localStorage.setItem('token', token)
         localStorage.setItem('tenant_id', tenant_id)
-        // Axios default header'ına token'ı ekle
         axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 
         return true

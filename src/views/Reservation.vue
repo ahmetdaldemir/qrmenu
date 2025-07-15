@@ -1,179 +1,165 @@
 <template>
-  <div class="reservation">
-    <h1>Make a Reservation</h1>
-    <form @submit.prevent="submitReservation" class="reservation-form">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input 
-          type="text" 
-          id="name" 
-          v-model="form.name" 
-          required
-          placeholder="Your name"
-        >
-      </div>
+  <div class="reservation-page">
+    <div class="top-bar">
+      <button class="back-btn" @click="goBack">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <h1>{{ t('title') }}</h1>
+    </div>
 
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input 
-          type="email" 
-          id="email" 
-          v-model="form.email" 
-          required
-          placeholder="Your email"
-        >
+    <div class="container">
+      <div class="card">
+        <div class="form-container">
+          <ReservationForm @submit="onSubmit" />
+          <div v-if="showPayment" class="payment-section">
+            <div class="divider">
+              <span>{{ t('paymentSection') }}</span>
+            </div>
+            <PaymentForm @submit="onPay" />
+          </div>
+        </div>
       </div>
-
-      <div class="form-group">
-        <label for="phone">Phone</label>
-        <input 
-          type="tel" 
-          id="phone" 
-          v-model="form.phone" 
-          required
-          placeholder="Your phone number"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="date">Date</label>
-        <input 
-          type="date" 
-          id="date" 
-          v-model="form.date" 
-          required
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="time">Time</label>
-        <input 
-          type="time" 
-          id="time" 
-          v-model="form.time" 
-          required
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="guests">Number of Guests</label>
-        <input 
-          type="number" 
-          id="guests" 
-          v-model="form.guests" 
-          required
-          min="1"
-          max="10"
-        >
-      </div>
-
-      <div class="form-group">
-        <label for="notes">Special Requests</label>
-        <textarea 
-          id="notes" 
-          v-model="form.notes"
-          placeholder="Any special requests or dietary requirements"
-        ></textarea>
-      </div>
-
-      <button type="submit" class="submit-btn">Make Reservation</button>
-    </form>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import axios from 'axios'
+import { useRouter } from 'vue-router'
+import { useReservationStore } from '../stores/reservation'
+import ReservationForm from '../components/ReservationForm.vue'
+import PaymentForm from '../components/PaymentForm.vue'
 
-const API_URL = 'https://agencymanager.onrender.com'
+const router = useRouter()
+const reservationStore = useReservationStore()
+const showPayment = ref(false)
+const selectedLang = ref(localStorage.getItem('lang') || 'en')
 
-const form = ref({
-  name: '',
-  email: '',
-  phone: '',
-  date: '',
-  time: '',
-  guests: 1,
-  notes: ''
-})
-
-const submitReservation = async () => {
-  try {
-    await axios.post(`${API_URL}/reservations`, form.value)
-    alert('Reservation submitted successfully!')
-    // Reset form
-    form.value = {
-      name: '',
-      email: '',
-      phone: '',
-      date: '',
-      time: '',
-      guests: 1,
-      notes: ''
-    }
-  } catch (error) {
-    console.error('Error submitting reservation:', error)
-    alert('Failed to submit reservation. Please try again.')
+const translations = {
+  title: { 
+    en: 'Reservation', 
+    tr: 'Rezervasyon', 
+    ru: 'Бронирование', 
+    ar: 'الحجز' 
+  },
+  paymentSection: { 
+    en: 'Payment Details', 
+    tr: 'Ödeme Detayları', 
+    ru: 'Детали оплаты', 
+    ar: 'تفاصيل الدفع' 
   }
+}
+
+const t = (key: keyof typeof translations) => translations[key][selectedLang.value as keyof typeof translations.title]
+
+function onSubmit(form: any) {
+  reservationStore.makeReservation(form)
+  showPayment.value = true
+}
+
+function onPay(payment: any) {
+  reservationStore.processPayment(payment)
+}
+
+function goBack() {
+  router.back()
 }
 </script>
 
 <style scoped>
-.reservation {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 0 1rem;
+.reservation-page {
+  min-height: 100vh;
+  background: #f5f5f5;
+  padding-bottom: 2rem;
+}
+
+.top-bar {
+  background: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #666;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.back-btn:hover {
+  background: #f0f0f0;
+  color: #333;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 2rem;
+  margin: 0;
+  font-size: 1.5rem;
+  color: #333;
 }
 
-.reservation-form {
-  background: white;
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.form-group {
-  margin-bottom: 1.5rem;
-}
-
-label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
-}
-
-textarea {
-  height: 100px;
-  resize: vertical;
-}
-
-.submit-btn {
-  width: 100%;
+.container {
+  max-width: 800px;
+  margin: 0 auto;
   padding: 1rem;
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.submit-btn:hover {
-  background-color: #c0392b;
+.card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+
+.card {
+  padding: unset !important;
+}
+.payment-section {
+  margin-top: 2rem;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 2rem 0;
+  color: #666;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #eee;
+}
+
+.divider span {
+  padding: 0 1rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .form-container {
+    padding: 1rem;
+  }
+  
+  h1 {
+    font-size: 1.2rem;
+  }
 }
 </style> 

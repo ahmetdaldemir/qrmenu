@@ -1,11 +1,12 @@
 import axios from 'axios'
-
-const API_URL = 'https://agencymanager.onrender.com'
+import { API_URL } from '../constants'
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
   timeout: 10000
 })
+
+axiosInstance.defaults.withCredentials = true;
 
 // Request interceptor
 axiosInstance.interceptors.request.use(
