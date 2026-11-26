@@ -31,7 +31,8 @@ export const useReservationStore = defineStore('reservation', {
       try {
         const response = await axiosInstance.post(`${API_URL}/payments`, {
           ...paymentData,
-          reservationId: this.reservation?.id
+          reservationId: this.reservation?.id,
+          currency_id: localStorage.getItem('currency') || '3'
         })
         return response.data
       } catch (error: any) {

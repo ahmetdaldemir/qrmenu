@@ -22,7 +22,8 @@
             class="menu-item"
           >
             <img
-              :src="`https://repo.agencymanagerpro.com${item.image}`"
+              v-if="item.image"
+              :src="`https://orientbosphorus.com/api/agency${item.image}`"
               :alt="item.translations[languageId]?.name"
               class="menu-item-image"
             />

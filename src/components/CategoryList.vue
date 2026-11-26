@@ -13,7 +13,7 @@
         class="category-card"
         @click="selectCategory(category.id)"
       >
-        <img :src="`${API_URL}${category.image}`" :alt="category.translations[languageId]?.name" class="category-image" />
+        <img v-if="category.image" :src="`${API_URL}${category.image}`" :alt="category.translations[languageId]?.name" class="category-image" />
         <div class="category-info">
           <h3>{{ category.translations[languageId]?.name }}</h3>
           <p>{{ category.translations[languageId]?.description }}</p>

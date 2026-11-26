@@ -1,6 +1,5 @@
 // API URLs
- export const API_URL = 'https://repo.agencymanagerpro.com'
-//export const API_URL = 'http://localhost:3100' // Uncomment for local development
+export const API_URL = 'https://orientbosphorus.com/api/agency'
 
 // API Endpoints
 export const API_ENDPOINTS = {
@@ -25,4 +24,4 @@ export const API_ENDPOINTS = {
 }
 
 // File Storage URLs
-export const FILE_STORAGE_URL = 'https://repo.agencymanagerpro.com' 
+export const FILE_STORAGE_URL = 'https://orientbosphorus.com/api/agency' 

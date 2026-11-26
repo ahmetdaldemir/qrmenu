@@ -21,10 +21,9 @@ axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   
   if (token) {
-    // Ensure headers object exists
-    config.headers = config.headers || {}
     // Set Authorization header
-    config.headers['Authorization'] = `Bearer ${token}`
+    config.headers = config.headers || {}
+    ;(config.headers as any)['Authorization'] = `Bearer ${token}`
   } else {
     Swal.fire({
       icon: 'error',

@@ -5,7 +5,7 @@
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <div class="brand">
-        <img v-if="tenant?.logoUrl" :src="`https://repo.agencymanagerpro.com/${tenant.logoUrl}`" alt="Logo" class="logo" />
+        <img v-if="tenant?.logoUrl" :src="`https://orientbosphorus.com/api/agency/${tenant.logoUrl}`" alt="Logo" class="logo" />
       </div>
     </div>
 
@@ -24,7 +24,7 @@
           @click="selectCategory(category.id)"
         >
           <div class="category-card-inner">
-            <img :src="`https://repo.agencymanagerpro.com${category.image}`" :alt="category.translations[selectedLanguage]?.name" class="category-image" />
+            <img v-if="category.image" :src="`https://orientbosphorus.com/api/agency${category.image}`" :alt="category.translations[selectedLanguage]?.name" class="category-image" />
             <div class="category-info">
               <h3>{{ category.translations[selectedLanguage]?.name }}</h3>
               <p>{{ category.translations[selectedLanguage]?.description }}</p>

@@ -18,7 +18,9 @@
           </svg>
           {{ t('reservation.selectPackage') }}</span>
         <div class="radio-group">
-          <label v-for="pricing in packages[0]?.tourPricings" :key="pricing.id" class="radio-label">
+          <!-- Debug: packages[0] = {{ packages[0] }} -->
+          <!-- Debug: packages[0]?.pricings = {{ packages[0]?.pricings }} -->
+          <label v-for="pricing in packages[0]?.pricings" :key="pricing.id" class="radio-label">
             <input type="radio" v-model="form.packet_id" :value="pricing.id" class="radio-input">
             <span class="radio-custom">
               <span class="radio-title">{{ pricing.packet }}</span>
@@ -36,7 +38,9 @@
           </svg>
           {{ t('reservation.selectMenu') }}</span>
         <div class="radio-group">
-          <label v-for="pricing in packages[0]?.tourPricings" :key="pricing.id" class="radio-label">
+          <!-- Debug: packages[0] = {{ packages[0] }} -->
+          <!-- Debug: packages[0]?.pricings = {{ packages[0]?.pricings }} -->
+          <label v-for="pricing in packages[0]?.pricings" :key="pricing.id" class="radio-label">
             <input type="radio" v-model="form.packet_id" :value="pricing.id" class="radio-input">
             <span class="radio-custom">
               <span class="radio-title">{{ pricing.packet }}</span>
@@ -397,7 +401,7 @@ interface Tour {
   description: string;
   isActive: boolean;
   isPacket: boolean;
-  tourPricings: TourPricing[];
+  pricings: TourPricing[];
 }
 
 const TOUR_ID = "1";
@@ -469,6 +473,7 @@ const form = reactive({
   expiryMonth: new Date().getMonth() + 1,
   expiryYear: new Date().getFullYear(),
   ccv: "",
+  currency_id: localStorage.getItem('currency') || 3
 });
 const phoneError = ref("");
 
@@ -514,6 +519,7 @@ async function calculate() {
         user_id: localStorage.getItem("userId"),
         supplier_id: 3,
         tour_id: TOUR_ID,
+        currency_id: localStorage.getItem('currency') || 3
       },
       {
         headers: {
@@ -609,9 +615,9 @@ async function fetchPackages() {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log("API Response:", response.data); // Debug için
     packages.value = [response.data];
     packet.value = response.data.isPacket;
-    console.log(packet.value);
   } catch (error) {
     console.error("Paket bilgileri yüklenirken hata oluştu:", error);
     Swal.fire({
@@ -1093,12 +1099,12 @@ select {
 .radio-title {
   font-weight: 600;
   color: #222;
-  font-size: 0.6rem;
+  font-size: 0.9rem;
   margin-bottom: 0.25rem;
 }
 
 .radio-description {
-  font-size: 0.4rem;
+  font-size: 0.9rem;
   color: #666;
 }
 

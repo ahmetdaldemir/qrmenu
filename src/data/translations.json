@@ -41,6 +41,31 @@
       "paymentError": "An error occurred during payment. Please try again.",
       "success": "Success!",
       "paymentSuccess": "Payment completed successfully."
+    },
+    "payment": {
+      "title": "Secure Payment",
+      "subtitle": "Enter your payment information to complete the transaction",
+      "amount": "Amount",
+      "amountPlaceholder": "Enter amount",
+      "cardNumber": "Card Number",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cardHolder": "Card Holder",
+      "cardHolderPlaceholder": "John Doe",
+      "expiry": "Expiry Date",
+      "expiryPlaceholder": "MM/YY",
+      "cvv": "CVV",
+      "cvvPlaceholder": "123",
+      "securityNotice": "Your payment information is encrypted and secure",
+      "payNow": "Pay Now",
+      "processing": "Processing...",
+      "validationError": "Validation Error",
+      "pleaseCheckFields": "Please check all fields and try again",
+      "error": "Payment Error",
+      "paymentFailed": "Payment failed. Please try again.",
+      "selectMethod": "Select Payment Method",
+      "fee": "fee",
+      "success": "Success!",
+      "paymentSuccess": "Payment completed successfully."
     }
   },
   "tr": {
@@ -85,6 +110,31 @@
       "paymentError": "Ödeme işlemi sırasında bir hata oluştu. Lütfen tekrar deneyin.",
       "success": "Başarılı!",
       "paymentSuccess": "Ödeme işlemi başarıyla tamamlandı."
+    },
+    "payment": {
+      "title": "Güvenli Ödeme",
+      "subtitle": "İşlemi tamamlamak için ödeme bilgilerinizi giriniz",
+      "amount": "Tutar",
+      "amountPlaceholder": "Tutar giriniz",
+      "cardNumber": "Kart Numarası",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cardHolder": "Kart Sahibi",
+      "cardHolderPlaceholder": "Ad Soyad",
+      "expiry": "Son Kullanma Tarihi",
+      "expiryPlaceholder": "AA/YY",
+      "cvv": "CVV",
+      "cvvPlaceholder": "123",
+      "securityNotice": "Ödeme bilgileriniz şifrelenmiş ve güvenlidir",
+      "payNow": "Ödeme Yap",
+      "processing": "İşleniyor...",
+      "validationError": "Doğrulama Hatası",
+      "pleaseCheckFields": "Lütfen tüm alanları kontrol edin ve tekrar deneyin",
+      "error": "Ödeme Hatası",
+      "paymentFailed": "Ödeme başarısız. Lütfen tekrar deneyin.",
+      "selectMethod": "Ödeme Yöntemi Seçin",
+      "fee": "komisyon",
+      "success": "Başarılı!",
+      "paymentSuccess": "Ödeme başarıyla tamamlandı."
     }
   },
   "ru": {
@@ -129,6 +179,27 @@
       "paymentError": "Произошла ошибка при оплате. Пожалуйста, попробуйте снова.",
       "success": "Успешно!",
       "paymentSuccess": "Оплата успешно завершена."
+    },
+    "payment": {
+      "title": "Безопасная оплата",
+      "subtitle": "Введите информацию об оплате для завершения транзакции",
+      "amount": "Сумма",
+      "amountPlaceholder": "Введите сумму",
+      "cardNumber": "Номер карты",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cardHolder": "Владелец карты",
+      "cardHolderPlaceholder": "Имя Фамилия",
+      "expiry": "Срок действия",
+      "expiryPlaceholder": "ММ/ГГ",
+      "cvv": "CVV",
+      "cvvPlaceholder": "123",
+      "securityNotice": "Ваша платежная информация зашифрована и безопасна",
+      "payNow": "Оплатить",
+      "processing": "Обработка...",
+      "validationError": "Ошибка валидации",
+      "pleaseCheckFields": "Пожалуйста, проверьте все поля и попробуйте снова",
+      "error": "Ошибка оплаты",
+      "paymentFailed": "Оплата не удалась. Пожалуйста, попробуйте снова."
     }
   },
   "ar": {
@@ -173,6 +244,27 @@
       "paymentError": "حدث خطأ أثناء الدفع. يرجى المحاولة مرة أخرى.",
       "success": "نجح!",
       "paymentSuccess": "تم إكمال عملية الدفع بنجاح."
+    },
+    "payment": {
+      "title": "دفع آمن",
+      "subtitle": "أدخل معلومات الدفع لإكمال المعاملة",
+      "amount": "المبلغ",
+      "amountPlaceholder": "أدخل المبلغ",
+      "cardNumber": "رقم البطاقة",
+      "cardNumberPlaceholder": "1234 5678 9012 3456",
+      "cardHolder": "حامل البطاقة",
+      "cardHolderPlaceholder": "الاسم الكامل",
+      "expiry": "تاريخ انتهاء الصلاحية",
+      "expiryPlaceholder": "شهر/سنة",
+      "cvv": "CVV",
+      "cvvPlaceholder": "123",
+      "securityNotice": "معلومات الدفع الخاصة بك مشفرة وآمنة",
+      "payNow": "ادفع الآن",
+      "processing": "جاري المعالجة...",
+      "validationError": "خطأ في التحقق",
+      "pleaseCheckFields": "يرجى التحقق من جميع الحقول والمحاولة مرة أخرى",
+      "error": "خطأ في الدفع",
+      "paymentFailed": "فشل الدفع. يرجى المحاولة مرة أخرى."
     }
   }
 } 

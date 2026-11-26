@@ -6,7 +6,7 @@
         <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
       <div class="brand">
-        <img v-if="tenant?.logoUrl" :src="`https://repo.agencymanagerpro.com/${tenant.logoUrl}`" alt="Logo" class="logo" />
+        <img v-if="tenant?.logoUrl" :src="`https://orientbosphorus.com/api/agency/${tenant.logoUrl}`" alt="Logo" class="logo" />
       </div>
     </div>
 

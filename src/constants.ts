@@ -1,5 +1,4 @@
-export const API_URL = 'https://repo.agencymanagerpro.com' 
-//export const API_URL = 'http://localhost:3100' 
+export const API_URL = 'https://orientbosphorus.com/api/agency' 
 
 export const API_ENDPOINTS = {
   MENU_CATEGORIES: '/menucategories',
